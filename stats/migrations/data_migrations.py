@@ -3,90 +3,84 @@
 from django.db import migrations, models
 
 COMPANIES = [
-	{
-		
-		"name" : "Facebook",
-		"code" : "FB",
-		"risk_factor" : 1,
-		"amount_from" : 0,
-		"amount_to" : 50000
-	},
-	{
-		
-		"name" : "Apple Inc.",
-		"code" : "AAPL",
-		"risk_factor" : 0,
-		"amount_from" : 0,
-		"amount_to" : 0
-	},
-	{
-		
-		"name" : "Alphabet Inc.",
-		"code" : "GOOG",
-		"risk_factor" : 0,
-		"amount_from" : 0,
-		"amount_to" : 0
-	},
-	{
-		"name" : "Amazon.com Inc.",
-		"code" : "AMZN",
-		"risk_factor" : 0,
-		"amount_from" : 0,
-		"amount_to" : 0
-	},
-	{
-		"name" : "Intel Corporation",
-		"code" : "INTC",
-		"risk_factor" : 0,
-		"amount_from" : 0,
-		"amount_to" : 0
-	},
-	{
-
-		"name" : "Microsoft Corporation",
-		"code" : "MSFT",
-		"risk_factor" : 0,
-		"amount_from" : 0,
-		"amount_to" : 0
-	},
-	{
-		"name" : "Tencent Holdings Limited",
-		"code" : "TCEHY",
-		"risk_factor" : 0,
-		"amount_from" : 0,
-		"amount_to" : 0
-	},
-	{
-		"name" : "International Business Machines Corporation",
-		"code" : "IBM",
-		"risk_factor" : 0,
-		"amount_from" : 0,
-		"amount_to" : 0
-	}
+    {
+        "name": "Facebook",
+        "code": "FB",
+        "risk_factor": 1,
+        "amount_from": 0,
+        "amount_to": 50000,
+    },
+    {
+        "name": "Apple Inc.",
+        "code": "AAPL",
+        "risk_factor": 0,
+        "amount_from": 0,
+        "amount_to": 0,
+    },
+    {
+        "name": "Alphabet Inc.",
+        "code": "GOOG",
+        "risk_factor": 0,
+        "amount_from": 0,
+        "amount_to": 0,
+    },
+    {
+        "name": "Amazon.com Inc.",
+        "code": "AMZN",
+        "risk_factor": 0,
+        "amount_from": 0,
+        "amount_to": 0,
+    },
+    {
+        "name": "Intel Corporation",
+        "code": "INTC",
+        "risk_factor": 0,
+        "amount_from": 0,
+        "amount_to": 0,
+    },
+    {
+        "name": "Microsoft Corporation",
+        "code": "MSFT",
+        "risk_factor": 0,
+        "amount_from": 0,
+        "amount_to": 0,
+    },
+    {
+        "name": "Tencent Holdings Limited",
+        "code": "TCEHY",
+        "risk_factor": 0,
+        "amount_from": 0,
+        "amount_to": 0,
+    },
+    {
+        "name": "International Business Machines Corporation",
+        "code": "IBM",
+        "risk_factor": 0,
+        "amount_from": 0,
+        "amount_to": 0,
+    },
 ]
-def add_company_details(apps, schema_editor):
-    db_alias = schema_editor.connection.alias 
-    Company = apps.get_models("stat", "Company") 
 
+
+def add_company_details(apps, schema_editor):
+    db_alias = schema_editor.connection.alias
+    Company = apps.get_model("stats", "Company")
     for company in COMPANIES:
         Company.objects.using(db_alias).get_or_create(**company)
 
-def delete_company_details(apps, schema_editor): 
+
+def delete_company_details(apps, schema_editor):
     db_alias = schema_editor.connection.alias
-    Company = apps.get_models("stat", "Company") 
+    Company = apps.get_model("stats", "Company")
     Company.objects.using(db_alias).all().delete()
+
 
 class Migration(migrations.Migration):
 
     initial = True
 
     dependencies = [
-        ('stats', '0001_initial'),
+        ("stats", "0001_initial"),
     ]
 
-    operations = [
-        migrations.RunPython(
-            add_company_details, delete_company_details
-        )
-    ]
-    
+    operations = [migrations.RunPython(add_company_details, delete_company_details)]
