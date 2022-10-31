@@ -10,8 +10,10 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
+import logging
 import os
 
+from colorlog import ColoredFormatter
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -132,3 +134,35 @@ STATIC_URL = '/static/'
 #paypal Integration
 PAYPAL_RECEIVER_EMAIL = os.environ["PAYPAL_RECEIVER_EMAIL"]
 PAYPAL_TEST = os.environ["PAYPAL_TEST"]
+
+
+
+## cloured logging using colourlog library
+LOG_LEVEL = logging.DEBUG
+LOG_FORMAT = (
+    "%(log_color)s%(asctime)s,%(msecs)d %(levelname)-8s%(reset)s | "
+    "%(log_color)s[%(pathname)s:%(filename)s:%(funcName)s:%(lineno)d] %(message)s%(reset)s"
+)
+
+DEFAULT_LOG_COLORS = {
+    "DEBUG": "purple",
+    "INFO": "blue",
+    "WARNING": "yellow",
+    "ERROR": "bold_red",
+    "CRITICAL": "bold_red",
+}
+
+DATE_FORMAT = "%Y-%m-%d:%H:%M:%S"
+SHORT_DATE_FORMAT = "Y-m-d"
+
+logging.root.setLevel(LOG_LEVEL)
+FORMATTER = ColoredFormatter(
+    LOG_FORMAT, DATE_FORMAT, log_colors=DEFAULT_LOG_COLORS
+)
+STREAM = logging.StreamHandler()
+STREAM.setLevel(LOG_LEVEL)
+STREAM.setFormatter(FORMATTER)
+
+LOG = logging.getLogger("pythonConfig")
+LOG.setLevel(LOG_LEVEL)
+LOG.addHandler(STREAM)
